@@ -4,9 +4,9 @@ import { AppDataSource } from "./dataSource";
 export const ReviewRepository = AppDataSource.getRepository(Review).extend({
   async getTotalReviewByCompany(companyId: number): Promise<number> {
     return await this.createQueryBuilder('r')
-        //.select('COUNT(r.id) as total')
+        .select('COUNT(DISTINCT(r.user)) as total')
         .where('r.company = :id', { id: companyId })
-        .getCount()
+        .getRawOne()
 
   },
 
