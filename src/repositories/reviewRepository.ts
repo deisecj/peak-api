@@ -3,11 +3,12 @@ import { AppDataSource } from "./dataSource";
 
 export const ReviewRepository = AppDataSource.getRepository(Review).extend({
   async getTotalReviewByCompany(companyId: number): Promise<number> {
-    return await this.createQueryBuilder('r')
-        .select('COUNT(DISTINCT(r.user)) as total')
-        .where('r.company = :id', { id: companyId })
-        .getRawOne()
+    const result = await this.createQueryBuilder('r')
+      .select('COUNT(DISTINCT(r.user)) as total')
+      .where('r.company = :id', { id: companyId })
+      .getRawOne()
 
+    return result.total;
   },
 
   async getAverageRatings(companyId: number): Promise<any[]>{
